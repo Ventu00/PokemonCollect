@@ -1,0 +1,28 @@
+.nav-link {
+    color: white;
+}
+
+.nav-link active {
+    color: white;
+}
+
+.btn{
+    color: white;
+
+}
+
+.btn-circle.btn-xl { 
+    width: 90px; 
+    height: 90px; 
+    padding-bottom: 20px;
+    border-radius: 45px; 
+    font-size: 45px; 
+    text-align: center; 
+    font-weight: bolder;
+    margin: 10px;
+} 
+
+.botonmas{
+    float: right;
+}
+
