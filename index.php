@@ -34,7 +34,10 @@
           </div>
         </div>      
       </div>
-
+      <?php
+        require_once('./php_librarys/back.php');
+        echo selectCarta();
+    ?>
       <div class="botonmas">
   <button type="button" onclick="mostrarFormulario()" class="btn btn-success btn-circle btn-xl float-right">+</button> 
 </div>

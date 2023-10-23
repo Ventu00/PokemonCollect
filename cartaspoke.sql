@@ -42,7 +42,9 @@ CREATE TABLE Te_Tipus (
 
 -- Cartas Pokemon
 INSERT INTO Carta (nom, descripcio, imatge)
-VALUES ('Torchic', 'Pokemon polluelo de fuego', LOAD_FILE('Colleccionstorchic.jpg'));
+VALUES ('Torchic', 'Pokemon polluelo de fuego', LOAD_FILE('imagenesCarta/torchicim.txt'));
+INSERT INTO Carta (nom, descripcio, imatge)
+VALUES ('Pikachu', 'La rata electrica', LOAD_FILE('pikachu.jpg'));
 
 
 -- Generació
@@ -66,5 +68,5 @@ INSERT INTO Tipus (nom)
 VALUES ('Fuego');
 
 
-
+select * from Carta;
 
