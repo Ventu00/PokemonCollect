@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Col·leccions</title>
@@ -26,11 +28,10 @@
 
       <div class="col-sm mt-4">
         <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="/imagenesCarta/Blaziken_9.webp" alt="Card image cap">
+          <img class="card-img-top" src="" alt="Card image cap">
           <div class="card-body">
             <h5 class="card-title">Blazicken</h5>
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="btn btn-danger" onclick="eliminar()">Eliminar</a>
           </div>
         </div>      
       </div>
