@@ -45,28 +45,41 @@ INSERT INTO Carta (nom, descripcio, imatge)
 VALUES ('Torchic', 'Pokemon polluelo de fuego', LOAD_FILE('imagenesCarta/torchicim.txt'));
 INSERT INTO Carta (nom, descripcio, imatge)
 VALUES ('Pikachu', 'La rata electrica', LOAD_FILE('pikachu.jpg'));
+INSERT INTO Carta (nom, descripcio, imatge)
+VALUES ('Squirtle', 'tortuga', LOAD_FILE('.jpg'));
+
+select * from Carta;
 
 
--- Generació
+-- Generaciócarta
 INSERT INTO Generacio (numero)
-VALUES (1);
-INSERT INTO Generacio (numero)
-VALUES (2);
-INSERT INTO Generacio (numero)
-VALUES (3);
-INSERT INTO Generacio (numero)
-VALUES (4);
-INSERT INTO Generacio (numero)
-VALUES (5);
-INSERT INTO Generacio (numero)
-VALUES (6);
-INSERT INTO Generacio (numero)
-VALUES (7);
+VALUES 
+ (1),
+ (2),
+ (3),
+ (4),
+ (5),
+ (6),
+ (7);
 
 -- Tipus
 INSERT INTO Tipus (nom)
-VALUES ('Fuego');
+VALUES ('Fuego'),
+       ('Agua'),
+       ('Planta'),
+       ('Eléctrico'),
+       ('Hielo'),
+       ('Lucha'),
+       ('Volador'),
+       ('Bicho'),
+       ('Veneno'),
+       ('Tierra'),
+       ('Roca'),
+       ('Fantasma'),
+       ('Psíquico'),
+       ('Siniestro'),
+       ('Acero'),
+       ('Hada');
 
 
-select * from Carta;
 

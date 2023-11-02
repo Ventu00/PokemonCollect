@@ -25,7 +25,7 @@ function selectCarta() {
   $sentencia = $conexion->prepare($sentenciaText);
   $sentencia->execute();
   $resultado = $sentencia->fetchAll();
-
+ 
   // Crear un HTML
   $html = '';
   foreach ($resultado as $fila) {
@@ -37,28 +37,50 @@ function selectCarta() {
     $html .= '<p class="card-text">' . $fila['descripcio'] . '</p>';
     $html .= '<form method="post" action="eliminar.php">';
     $html .= '<input type="hidden" name="id" value="' . $fila['carta_id'] . '">';
-    $html .= '<button type="submit" class="btn btn-danger">Eliminar</button>';
+    $html .= '<button type="submit" class="btn btn-danger">ELIMINAR</button>';
     $html .= '</form>';
     $html .= '</div>';
     $html .= '</div>';
     $html .= '</div>';
-  }
-
+ }
+ 
+ 
   $conexion = closebd();
-
+ 
   // Devolver el HTML
   return $html;
-}
+ }
 
-
-function eliminarCarta($id) {
-  $conexion = openbd();
-  $sentenciaText = "DELETE FROM Carta WHERE carta_id = ?";
+ function insertCarta($nom, $descripcio, $imatge, $generacion_id, $tipos) {
+  $conexion = openBd();
+  
+  // Primero, inserta la carta en la tabla 'carta'
+  $sentenciaText = "INSERT INTO Carta (nom, descripcio, imatge) VALUES (:nom, :descripcio, :imatge)";
   $sentencia = $conexion->prepare($sentenciaText);
-  $sentencia->execute([$id]);
-  $conexion = closebd();
-  return true; // Puedes retornar true si la eliminación fue exitosa
+  $sentencia->bindParam(':nom', $nom);
+  $sentencia->bindParam(':descripcio', $descripcio);
+  $sentencia->bindParam(':imatge', $imatge);
+  $sentencia->execute();
+
+  // Obtiene el ID de la carta recién insertada
+  $carta_id = $conexion->lastInsertId();
+
+  // Inserta la relación entre la carta y la generación en la tabla 'carta_generacion'
+  $sentenciaText = "INSERT INTO Generacio (carta_id, generacion_id) VALUES (:carta_id, :generacion_id)";
+  $sentencia = $conexion->prepare($sentenciaText);
+  $sentencia->bindParam(':carta_id', $carta_id);
+  $sentencia->bindParam(':generacion_id', $generacion_id);
+  $sentencia->execute();
+
+  // Inserta la relación entre la carta y los tipos en la tabla 'carta_tipo' (relación N-M)
+  foreach ($tipos as $tipo_id) {
+      $sentenciaText = "INSERT INTO Tipus (carta_id, tipo_id) VALUES (:carta_id, :tipo_id)";
+      $sentencia = $conexion->prepare($sentenciaText);
+      $sentencia->bindParam(':carta_id', $carta_id);
+      $sentencia->bindParam(':tipo_id', $tipo_id);
+      $sentencia->execute();
+  }
+
+  $conexion = closeBd();
 }
 
-
-?>

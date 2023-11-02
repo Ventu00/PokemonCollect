@@ -51,68 +51,74 @@
     var formulario = document.createElement("form");
     formulario.innerHTML = `
     <div class="container py-5">
-    <form onsubmit="return validar()">
+    <form action="/php_controllers/cartasControler.php" method="POST" onsubmit="return validar()">
         <div class="row">
             <div class="col-md form-group">
-                <label for="camp1">Nombre del Pokemon :</label>
-                <input type="text" id="camp1" name="camp1" class="form-control">
+                <label for="nom">Nombre del Pokemon :</label>
+                <input type="text" id="nom" name="nom" class="form-control">
             </div>
             <div class="col-md form-group">
-                <label for="camp3">Numero de su generación :</label>
-                <input type="number" id="camp3" name="camp3" min="1" max="9" class="form-control">
+                <label for="numero">Numero de su generación :</label>
+                <input type="number" id="numerog" name="numerog" min="1" max="9" class="form-control">
             </div>
             <div class="col-md form-group">
                 <label for="floatingSelectGrid">Indica su Tipo</label>
-                <select class="form-select" id="floatingSelectGrid">
+                <select class="form-select" id="nomt" name="nomt">
                 <option selected>Su  tipo es...</option>
-                      <option value="Acero">Acero</option>
-                      <option value="Agua">Agua</option>
-                      <option value="Bicho">Bicho</option>
-                      <option value="Dragón">Dragón</option>
-                      <option value="Eléctrico">Eléctrico</option>
-                      <option value="Fantasma">Fantasma</option>
-                      <option value="Fuego">Fuego</option>
-                      <option value="Hada">Hada</option>
-                      <option value="Hielo">Hielo</option>
-                      <option value="Lucha">Lucha</option>
-                      <option value="Normal">Normal</option>
-                      <option value="Planta">Planta</option>
-                      <option value="Psíquico">Psíquico</option>
-                      <option value="Roca">Roca</option>
-                      <option value="Siniestro">Siniestro</option>
-                      <option value="Tierra">Tierra</option>
-                      <option value="Veneno">Veneno</option>
-                      <option value="Volador">Volador</option>                </select>
+                      <option value="1">Acero</option>
+                      <option value="2">Agua</option>
+                      <option value="3">Bicho</option>
+                      <option value="4">Dragón</option>
+                      <option value="5">Eléctrico</option>
+                      <option value="6">Fantasma</option>
+                      <option value="7">Fuego</option>
+                      <option value="8">Hada</option>
+                      <option value="9">Hielo</option>
+                      <option value="10">Lucha</option>
+                      <option value="11">Normal</option>
+                      <option value="12">Planta</option>
+                      <option value="13">Psíquico</option>
+                      <option value="14">Roca</option>
+                      <option value="15">Siniestro</option>
+                      <option value="16">Tierra</option>
+                      <option value="17">Veneno</option>
+                      <option value="18">Volador</option>       
+                    </select>
             </div>
             <div class="col-md form-group">
                 <label for="floatingSelectGrid2">Indica su segundo Tipo (opcional)</label>
-                <select class="form-select" id="floatingSelectGrid2">
+                <select class="form-select" id="nom" name="nom[]">
                 <option selected>Su segundo tipo es...</option>
-                      <option value="Acero">Acero</option>
-                      <option value="Agua">Agua</option>
-                      <option value="Bicho">Bicho</option>
-                      <option value="Dragón">Dragón</option>
-                      <option value="Eléctrico">Eléctrico</option>
-                      <option value="Fantasma">Fantasma</option>
-                      <option value="Fuego">Fuego</option>
-                      <option value="Hada">Hada</option>
-                      <option value="Hielo">Hielo</option>
-                      <option value="Lucha">Lucha</option>
-                      <option value="Normal">Normal</option>
-                      <option value="Planta">Planta</option>
-                      <option value="Psíquico">Psíquico</option>
-                      <option value="Roca">Roca</option>
-                      <option value="Siniestro">Siniestro</option>
-                      <option value="Tierra">Tierra</option>
-                      <option value="Veneno">Veneno</option>
-                      <option value="Volador">Volador</option>                </select>
+                      <option value="1">Acero</option>
+                      <option value="2">Agua</option>
+                      <option value="3">Bicho</option>
+                      <option value="4">Dragón</option>
+                      <option value="5">Eléctrico</option>
+                      <option value="6">Fantasma</option>
+                      <option value="7">Fuego</option>
+                      <option value="8">Hada</option>
+                      <option value="9">Hielo</option>
+                      <option value="10">Lucha</option>
+                      <option value="11">Normal</option>
+                      <option value="12">Planta</option>
+                      <option value="13">Psíquico</option>
+                      <option value="14">Roca</option>
+                      <option value="15">Siniestro</option>
+                      <option value="16">Tierra</option>
+                      <option value="17">Veneno</option>
+                      <option value="18">Volador</option>        
+                    </select>
             </div>
         </div>
         <div class="col form-group">
                 <label for="floatingTextarea">Descripción</label>
-                <textarea class="form-control" placeholder="Descripción del pokémon." id="floatingTextarea"></textarea>
+                <textarea class="form-control" name="descripcio" placeholder="Descripción del pokémon." id="floatingTextarea"></textarea>
         </div>
-        <button class="btn btn-primary mt-2" type="submit">Listo</button>
+        <div class="form-group mt-2">
+                <label for="pokemonImage">Selecciona una imagen del Pokémon:</label>
+                <input type="file" class="form-control-file" id="imatge" name="imatge">
+            </div>
+        <button class="btn btn-primary mt-2" name="insert" type="submit">Listo</button>
         <button type="button" class="btn btn-secondary mt-2 ">Cancelar</button>
 
     </form>
