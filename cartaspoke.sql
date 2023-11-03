@@ -13,12 +13,12 @@ CREATE TABLE Carta (
 
 CREATE TABLE Generacio (
     generacio_id INT PRIMARY KEY AUTO_INCREMENT,
-    numero INT
+    numerog INT
 );
 
 CREATE TABLE Tipus (
     tipus_id INT PRIMARY KEY AUTO_INCREMENT,
-    nom VARCHAR(255)
+    nomt VARCHAR(255)
 );
 
 -- relación Pertany_a (1:N entre Carta y Generació)
