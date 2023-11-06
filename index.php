@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<style>
+  .hidden-form {
+    display: none;
+  }
+</style>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <meta charset="UTF-8">
@@ -40,17 +46,9 @@
         echo selectCarta();
     ?>
       <div class="botonmas">
-  <button type="button" onclick="mostrarFormulario()" class="btn btn-success btn-circle btn-xl float-right">+</button> 
-</div>
-  </div>
-
-<script>
-  function mostrarFormulario() {
-    document.querySelector('.btn.btn-success.btn-circle.btn-xl.float-right').disabled = true;
-    // Crear el formulario
-    var formulario = document.createElement("form");
-    formulario.innerHTML = `
-    <div class="container py-5">
+  <button type="button" onclick="mostrarFormulario()" class="btn btn-success btn-circle btn-xl float-right">+</button>
+  <div class="container py-5 hidden-form">
+  <div class="container py-5">
     <form action="/php_controllers/cartasControler.php" method="POST" onsubmit="return validar()">
         <div class="row">
             <div class="col-md form-group">
@@ -123,20 +121,26 @@
 
     </form>
 </div>
+</div>
+ 
+</div>
+  </div>
 
+<script>
+function mostrarFormulario() {
+  var botonMas = document.querySelector('.btn.btn-success.btn-circle.btn-xl.float-right');
+  botonMas.disabled = true;
 
-    `;
-    var botonCancelar = formulario.querySelector('.btn.btn-secondary.mt-2');
-    botonCancelar.addEventListener('click', function() {
-        // Eliminar el formulario del DOM
-        formulario.remove();
-        
-        // Habilitar el botón para mostrar el formulario
-        document.querySelector('.btn.btn-success.btn-circle.btn-xl.float-right').disabled = false;
-    });
-    // Añadir el formulario al cuerpo del documento
-    document.body.appendChild(formulario);
-  }
+  var formulario = document.querySelector('.hidden-form');
+  formulario.style.display = 'block';
+
+  var botonCancelar = formulario.querySelector('.btn.btn-secondary.mt-2');
+  botonCancelar.addEventListener('click', function() {
+    formulario.style.display = 'none';
+    botonMas.disabled = false;
+  });
+}
+
 </script>
 
 </body>
