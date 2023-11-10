@@ -8,7 +8,7 @@ CREATE TABLE Carta (
     carta_id INT PRIMARY KEY AUTO_INCREMENT,
     nom VARCHAR(255) not null,
     descripcio TEXT not null,
-    imatge blob
+    imagen varchar(255) 
 );
 
 CREATE TABLE Generacio (
@@ -41,18 +41,18 @@ CREATE TABLE Te_Tipus (
 
 
 -- Cartas Pokemon
-INSERT INTO Carta (nom, descripcio, imatge)
-VALUES ('Torchic', 'Pokemon polluelo de fuego', LOAD_FILE('imagenesCarta/torchicim.txt'));
-INSERT INTO Carta (nom, descripcio, imatge)
-VALUES ('Pikachu', 'La rata electrica', LOAD_FILE('pikachu.jpg'));
-INSERT INTO Carta (nom, descripcio, imatge)
-VALUES ('Squirtle', 'tortuga', LOAD_FILE('.jpg'));
+INSERT INTO Carta (nom, descripcio)
+VALUES ('Torchic', 'Pokemon polluelo de fuego');
+INSERT INTO Carta (nom, descripcio)
+VALUES ('Pikachu', 'La rata electrica');
+INSERT INTO Carta (nom, descripcio)
+VALUES ('Squirtle', 'tortuga');
 
 select * from Carta;
 
 
 -- Generaciócarta
-INSERT INTO Generacio (numero)
+INSERT INTO Generacio (numerog)
 VALUES 
  (1),
  (2),
@@ -63,7 +63,7 @@ VALUES
  (7);
 
 -- Tipus
-INSERT INTO Tipus (nom)
+INSERT INTO Tipus (nomt)
 VALUES ('Fuego'),
        ('Agua'),
        ('Planta'),

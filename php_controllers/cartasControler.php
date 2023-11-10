@@ -4,15 +4,22 @@ require_once('../php_librarys/back.php');
 if (isset($_POST['insert'])) {
     $nom = $_POST['nom'];
     $descripcio = $_POST['descripcio'];
-    $imatge = $_POST['imatge'];
-    $generacion_id = $_POST['generacion_id']; // Asegúrate de tener un campo para la generación en tu formulario
-    $tipos = $_POST['tipos']; // Supongamos que 'tipos' es un array que contiene los ID de los tipos seleccionados
+    $generacio_id = $_POST['generacio_id'];
+    $tipus = $_POST['tipus_id']; 
 
-    // Llama a la función para insertar la carta
-    insertCarta($nom, $descripcio, $imatge, $generacion_id, $tipos);
+    $imagen = $_FILES['imagen']['name'];
+    $imagen_temp = $_FILES['imagen']['tmp_name'];
+    $carpeta_destino = "C:/xampp/htdocs/Colleccions/PokemonCollect/imagenesserver/"; 
+    $findestino = $carpeta_destino.$imagen;
+    $findestinobd = "/Colleccions/PokemonCollect/imagenesserver/".$imagen;
+  
+    move_uploaded_file($imagen_temp, $findestino);
+  
+    insertCarta($nom, $descripcio, $generacio_id, $tipus, $findestinobd);
 
-    // Redirige a la página principal o a donde desees después de la inserción
     header('Location: ../index.php');
     exit();
+
+
 }
 ?>
