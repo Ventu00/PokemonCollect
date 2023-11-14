@@ -26,7 +26,7 @@ function selectTipus() {
   $sentencia->execute();
   $resultado = $sentencia->fetchAll();
 
-  $html = '<select class="form-select" id="tipus_id" name="tipus_id" required>  ';
+  $html = '<select class="form-select" id="tipus_id" name="tipus_id_1" required>  ';
   foreach ($resultado as $fila) {
     if (array_key_exists('nomt', $fila)) {
       $html .= '<option value="' . $fila['tipus_id'] . '">' . $fila['nomt'] . '</option>';
@@ -41,6 +41,74 @@ function selectTipus() {
   return $html;
 }
 
+function selectTipus2() {
+  $conexion = openbd();
+  $sentenciaText = "SELECT * FROM Tipus";
+  $sentencia = $conexion->prepare($sentenciaText);
+  $sentencia->execute();
+  $resultado = $sentencia->fetchAll();
+
+  $html = '<select class="form-select" id="tipus_id" name="tipus_id_2" required>  ';
+  foreach ($resultado as $fila) {
+    if (array_key_exists('nomt', $fila)) {
+      $html .= '<option value="' . $fila['tipus_id'] . '">' . $fila['nomt'] . '</option>';
+    } else {
+      echo "La clave 'nomt' no existe en el array fila.";
+    }
+  }
+  $html .= '</select>';
+  
+
+  $conexion = closebd();
+  return $html;
+}
+function selectTiposcarta($carta_id) {
+  $conexion = openbd();
+  $sentenciaTextTipos = "SELECT TT.carta_id, T1.nomt as tipo_1, T2.nomt as tipo_2
+                        FROM Te_Tipus TT
+                        INNER JOIN Tipus T1 ON TT.tipus_id_1 = T1.tipus_id
+                        INNER JOIN Tipus T2 ON TT.tipus_id_2 = T2.tipus_id
+                        WHERE TT.carta_id = :carta_id";
+  $sentenciaTipos = $conexion->prepare($sentenciaTextTipos);
+  $sentenciaTipos->bindParam(':carta_id', $carta_id);
+  $sentenciaTipos->execute();
+  $resultadoTipos = $sentenciaTipos->fetchAll();
+
+  // Consulta para obtener la generación
+  $sentenciaTextGeneracion = "SELECT G.numerog
+                             FROM Generacio G
+                             INNER JOIN Pertany_a P ON G.generacio_id = P.generacio_id
+                             WHERE P.carta_id = :carta_id";
+  $sentenciaGeneracion = $conexion->prepare($sentenciaTextGeneracion);
+  $sentenciaGeneracion->bindParam(':carta_id', $carta_id);
+  $sentenciaGeneracion->execute();
+  $generacion = $sentenciaGeneracion->fetchColumn(); // Obtener un solo valor
+
+  $html = '<div class="tiposcontainer">';
+  $html .= '<div class="fuentestitulotipo";><strong>Tipo 1</strong><span class="spantipo"><strong>Tipo 2</strong></span></div>';
+  foreach ($resultadoTipos as $fila) {
+      $html .= '<div class="tipostabla">';
+      $html .= '<span>' . $fila['tipo_1'] . '</span>';
+      $html .= '<span class="contenidotipospan" ><strong>-</strong></span>';
+      $html .= '<span class="contenidotipospan" >' . $fila['tipo_2'] . '</span>';
+      $html .= '</div>';
+  }
+
+  // Agregar la información de generación
+  $html .= '<div class="generacioninfo" ><strong>Generación:</strong> ' . $generacion . '</div>';
+
+  $html .= '</div>';
+
+  $conexion = closebd();
+  return $html;
+}
+
+
+
+
+
+
+
 
 function selectCarta() {
   $conexion = openbd();
@@ -49,23 +117,27 @@ function selectCarta() {
   $sentencia->execute();
   $resultado = $sentencia->fetchAll();
 
-  // Crear un HTML
   $html = '';
   foreach ($resultado as $fila) {
     $html .= '<div class="col-sm mt-4">';
-    $html .= '<div class="card" style="width: 18rem;">';
-
-    // Mostrar la imagen si está disponible
+    $html .= '<div class="card"">';
     if (!empty($fila['imagen'])) {
       $html .= "<img src='" . $fila['imagen'] . "' class='card-img-top' alt='Imagen de la carta'>";
     }
-
     $html .= '<div class="card-body">';
     $html .= '<h5 class="card-title">' . $fila['nom'] . '</h5>';
     $html .= '<p class="card-text">' . $fila['descripcio'] . '</p>';
     $html .= '<form method="post" action="php_librarys/eliminar.php">';
     $html .= '<input type="hidden" name="id" value="' . $fila['carta_id'] . '">';
-    $html .= '<button type="submit" class="btn btn-danger">ELIMINAR</button>';
+    $html .= '<div class="btn-group">';
+    $html .= '<button type="submit" class="btn btn-danger btn-sm">ELIMINAR</button>';
+    $html .= '<button type="button" class="btn btn-dark btn-sm">EDITAR</button>';
+    $html .= '</div>';
+    
+    
+    $html .= '<div  style="float: right;">';
+    $html .= selectTiposcarta($fila['carta_id']);
+    $html .= '</div>';
     $html .= '</form>';
     $html .= '</div>';
     $html .= '</div>';
@@ -74,56 +146,54 @@ function selectCarta() {
 
   return $html;
 }
-
- function insertCarta($nom, $descripcio, $generacio_id, $tipos, $imagen) {
+function insertCarta($nom, $descripcio, $generacio_id, $tipus_id_1, $tipus_id_2, $imagen) {
   $conexion = openBd();
-  
+
   // Primero, inserta la carta en la tabla 'carta'
   $sentenciaText = "INSERT INTO Carta (nom, descripcio, imagen) VALUES (:nom, :descripcio, :imagen)";
   $sentencia = $conexion->prepare($sentenciaText);
   $sentencia->bindParam(':nom', $nom);
   $sentencia->bindParam(':descripcio', $descripcio);
   $sentencia->bindParam(':imagen', $imagen);
-
   $sentencia->execute();
 
   // Obtiene el ID de la carta recién insertada
   $carta_id = $conexion->lastInsertId();
 
-  // Inserta la relación entre la carta y la generación en la tabla 'carta_generacion'
+  // Inserta la relación entre la carta y la generación en la tabla 'Pertany_a'
   $sentenciaText = "INSERT INTO Pertany_a (carta_id, generacio_id) VALUES (:carta_id, :generacio_id)";
   $sentencia = $conexion->prepare($sentenciaText);
   $sentencia->bindParam(':carta_id', $carta_id);
   $sentencia->bindParam(':generacio_id', $generacio_id);
   $sentencia->execute();
 
-  // Inserta la relación entre la carta y los tipos en la tabla 'carta_tipo' (relación N-M)
-  foreach ($tipus as $tipus_id) {
-      $sentenciaText = "INSERT INTO Te_Tipus (carta_id, tipus_id) VALUES (:carta_id, :tipus_id)";
-      $sentencia = $conexion->prepare($sentenciaText);
-      $sentencia->bindParam(':carta_id', $carta_id);
-      $sentencia->bindParam(':tipus_id', $tipus_id);
-      $sentencia->execute();
-  }
+  // Inserta la relación entre la carta y los tipos en la tabla 'Te_Tipus' (relación N-M)
+  $sentenciaText = "INSERT INTO Te_Tipus (carta_id, tipus_id_1, tipus_id_2) VALUES (:carta_id, :tipus_id_1, :tipus_id_2)";
+  $sentencia = $conexion->prepare($sentenciaText);
+  $sentencia->bindParam(':carta_id', $carta_id);
+  $sentencia->bindParam(':tipus_id_1', $tipus_id_1);
+  $sentencia->bindParam(':tipus_id_2', $tipus_id_2);
+  $sentencia->execute();
 
   $conexion = closeBd();
 }
+
 function eliminarCarta($carta_id) {
   $conexion = openBd();
 
-  // Elimina la relació entre la carta i la generació en la taula 'pertany_a'
+  // Elimina la relación entre la carta y la generación en la tabla 'Pertany_a'
   $sentenciaText = "DELETE FROM Pertany_a WHERE carta_id = :carta_id";
   $sentencia = $conexion->prepare($sentenciaText);
   $sentencia->bindParam(':carta_id', $carta_id);
   $sentencia->execute();
 
-  // Elimina la relació entre la carta i els tipus en la taula 'te_tipus'
+  // Elimina la relación entre la carta y los tipos en la tabla 'Te_Tipus'
   $sentenciaText = "DELETE FROM Te_Tipus WHERE carta_id = :carta_id";
   $sentencia = $conexion->prepare($sentenciaText);
   $sentencia->bindParam(':carta_id', $carta_id);
   $sentencia->execute();
 
-  // Elimina la carta de la taula 'carta'
+  // Elimina la carta de la tabla 'Carta'
   $sentenciaText = "DELETE FROM Carta WHERE carta_id = :carta_id";
   $sentencia = $conexion->prepare($sentenciaText);
   $sentencia->bindParam(':carta_id', $carta_id);
@@ -131,4 +201,5 @@ function eliminarCarta($carta_id) {
 
   $conexion = closeBd();
 }
+
 

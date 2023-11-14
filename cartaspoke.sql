@@ -18,7 +18,8 @@ CREATE TABLE Generacio (
 
 CREATE TABLE Tipus (
     tipus_id INT PRIMARY KEY AUTO_INCREMENT,
-    nomt VARCHAR(255)
+    nomt VARCHAR(255),
+    nomt2 VARCHAR(255)
 );
 
 -- relación Pertany_a (1:N entre Carta y Generació)
@@ -30,25 +31,28 @@ CREATE TABLE Pertany_a (
     FOREIGN KEY (generacio_id) REFERENCES Generacio(generacio_id)
 );
 
--- relación Té_Tipus (M:N entre Carta y Tipus)
+-- Relación de muchos a muchos entre Carta y Tipus (con dos tipos)
 CREATE TABLE Te_Tipus (
     carta_id INT,
-    tipus_id INT,
-    PRIMARY KEY (carta_id, tipus_id),
+    tipus_id_1 INT,
+    tipus_id_2 INT,
+    PRIMARY KEY (carta_id),
     FOREIGN KEY (carta_id) REFERENCES Carta(carta_id),
-    FOREIGN KEY (tipus_id) REFERENCES Tipus(tipus_id)
+    FOREIGN KEY (tipus_id_1) REFERENCES Tipus(tipus_id),
+    FOREIGN KEY (tipus_id_2) REFERENCES Tipus(tipus_id)
 );
 
 
--- Cartas Pokemon
-INSERT INTO Carta (nom, descripcio)
-VALUES ('Torchic', 'Pokemon polluelo de fuego');
-INSERT INTO Carta (nom, descripcio)
-VALUES ('Pikachu', 'La rata electrica');
-INSERT INTO Carta (nom, descripcio)
-VALUES ('Squirtle', 'tortuga');
 
-select * from Carta;
+-- Cartas Pokemon
+-- INSERT INTO Carta (nom, descripcio)
+-- VLUES ('Torchic', 'Pokemon polluelo de fuego');
+-- INSERT INTO Carta (nom, descripcio)
+-- VALUES ('Pikachu', 'La rata electrica');
+-- INSERT INTO Carta (nom, descripcio)
+-- VALUES ('Squirtle', 'tortuga');
+
+-- select * from Carta;
 
 
 -- Generaciócarta
@@ -64,7 +68,8 @@ VALUES
 
 -- Tipus
 INSERT INTO Tipus (nomt)
-VALUES ('Fuego'),
+VALUES ('No tiene'),
+		('Fuego'),
        ('Agua'),
        ('Planta'),
        ('Eléctrico'),
