@@ -41,15 +41,18 @@
         <div class="container ">
             <form action="php_controllers/cartasControler.php" method="POST" enctype="multipart/form-data">
                 <div>
-                    <label for="nom">Nombre del Pokemon:</label><br>
+                  <div class="tituloform">
+                  <h6 class="nuevacartatitulo">Nueva Carta</h6>
+                  </div>
+                    <label for="nom">Nombre del Pokemon</label><br>
                     <input type="text" id="nom" name="nom" class="form-control" required>
                 </div>
                 <div>
-                    <label for="generacion_id">Generación:</label><br>
+                    <label for="generacion_id">Generación</label><br>
                     <input type="number" id="generacio_id" name="generacio_id" min="1" max="9" class="form-control" required>
                 </div>
                 <div>
-                    <label for="nomt">Tipo:</label><br>
+                    <label for="nomt">Tipo</label><br>
                     <?php
                     require_once('./php_librarys/back.php');
                     echo selectTipus();
@@ -81,26 +84,38 @@
         </div>
     </div>
 </div>
-
-
  
 </div>
   </div>
 
 <script>
 function mostrarFormulario() {
+  var overlay = document.createElement('div');
+  overlay.style.position = 'fixed';
+  overlay.style.top = '0';
+  overlay.style.left = '0';
+  overlay.style.width = '100%';
+  overlay.style.height = '100%';
+  overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+  overlay.style.zIndex = '9999';
+  document.body.appendChild(overlay);
+
   var botonMas = document.querySelector('.btn.btn-success.btn-circle.btn-xl.float-right');
   botonMas.disabled = true;
 
   var formulario = document.querySelector('.hidden-form');
   formulario.style.display = 'block';
+  formulario.style.zIndex = '10000'; // Asegúrate de que el z-index del formulario sea mayor que el del overlay
 
   var botonCancelar = formulario.querySelector('.btn.btn-secondary.mt-2');
   botonCancelar.addEventListener('click', function() {
     formulario.style.display = 'none';
     botonMas.disabled = false;
+    document.body.removeChild(overlay);
   });
 }
+
+
 
 </script>
 
