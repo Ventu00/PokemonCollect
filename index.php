@@ -12,7 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
-    <script src="javascript/scripts.js"></script>
+    <script src="scripts.js"></script>
   </head>
 <body style="margin: 0;">
   <nav  id="nav" class="navbar navbar-expand-lg ">
@@ -36,7 +36,7 @@
         echo selectCarta();
     ?>
 <div class="botonmas">
-    <button type="button" onclick="mostrarFormulario()" class="btn btn-success btn-circle btn-xl float-right">+</button>
+    <button type="button" onclick="mostrarFormulario('agregar')" class="btn btn-success btn-circle btn-xl float-right">+</button>
     <div class="container  hidden-form">
         <div class="container ">
             <form action="php_controllers/cartasControler.php" method="POST" enctype="multipart/form-data">
@@ -46,6 +46,7 @@
                   </div>
                     <label for="nom">Nombre del Pokemon</label><br>
                     <input type="text" id="nom" name="nom" class="form-control" required>
+                    <input type="hidden" name="accion" id="accion" value="agregar"> <!-- de aqui dependera la accion de agregar o modificar, que tengo un lio que no veas-->
                 </div>
                 <div>
                     <label for="generacion_id">Generación</label><br>
@@ -76,7 +77,7 @@
                   </div>
                 </div>
                 <div class="btn-group">
-                <button class="btn btn-primary mt-2" name="insert" type="submit">Agregar</button>
+                <button class="btn btn-primary mt-2" name="insert" type="submit" onclick="actualizarAccion('agregar')">Agregar</button>
                 <button class="btn btn-secondary mt-2" name="cancel" onclick="location.reload()" type="submit">Cancelar</button>
                 </div>
 
@@ -87,37 +88,6 @@
  
 </div>
   </div>
-
-<script>
-function mostrarFormulario() {
-  var overlay = document.createElement('div');
-  overlay.style.position = 'fixed';
-  overlay.style.top = '0';
-  overlay.style.left = '0';
-  overlay.style.width = '100%';
-  overlay.style.height = '100%';
-  overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-  overlay.style.zIndex = '9999';
-  document.body.appendChild(overlay);
-
-  var botonMas = document.querySelector('.btn.btn-success.btn-circle.btn-xl.float-right');
-  botonMas.disabled = true;
-
-  var formulario = document.querySelector('.hidden-form');
-  formulario.style.display = 'block';
-  formulario.style.zIndex = '10000'; // Asegúrate de que el z-index del formulario sea mayor que el del overlay
-
-  var botonCancelar = formulario.querySelector('.btn.btn-secondary.mt-2');
-  botonCancelar.addEventListener('click', function() {
-    formulario.style.display = 'none';
-    botonMas.disabled = false;
-    document.body.removeChild(overlay);
-  });
-}
-
-
-
-</script>
 
 </body>
 </html>
