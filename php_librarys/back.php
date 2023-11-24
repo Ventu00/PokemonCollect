@@ -103,13 +103,6 @@ function selectTiposcarta($carta_id) {
   return $html;
 }
 
-
-
-
-
-
-
-
 function selectCarta() {
   $conexion = openbd();
   $sentenciaText = "SELECT * FROM Carta";
@@ -131,7 +124,7 @@ function selectCarta() {
     $html .= '<input type="hidden" name="id" value="' . $fila['carta_id'] . '">';
     $html .= '<div class="btn-group">';
     $html .= '<button type="submit" class="btn btn-danger btn-sm">ELIMINAR</button>';
-    $html .= '<button type="button" onclick="mostrarFormulario(\'editar\')" onclick="actualizarAccion(\'editar\')" class="btn btn-dark btn-sm">EDITAR</button>';
+    $html .= '<a href="php_controllers/cartasControler.php?id=' . $fila['carta_id'] . '&type=editar" class="btn btn-dark btn-sm">EDITAR</a>';
     $html .= '</div>';
     
     

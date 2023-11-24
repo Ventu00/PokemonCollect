@@ -1,11 +1,14 @@
 <?php
 require_once('../php_librarys/back.php');
+?>
+<?php
 
-if (isset($_POST['insert'])) {
+
+   
+
+if (isset($_POST['agregar'])) {
 
     $accion = $_POST['accion'];
-
-    if ($accion == 'agregar') {
 
     $nom = $_POST['nom'];
     $descripcio = $_POST['descripcio'];
@@ -24,8 +27,14 @@ if (isset($_POST['insert'])) {
   
     insertCarta($nom, $descripcio, $generacio_id, $tipus_1, $tipus_2, $findestinobd);
 
-} elseif ($accion == 'editar') {
-    $carta_id = $_POST['id'];
+echo"pizza";
+header('Location: ../index.php');
+exit();
+}
+if(isset($_GET['id'])&&isset($_GET['type'])){
+    $id=$_GET['id'];
+    $type=$_GET['type'];
+if ($type=="editar") {
 
     $nom = $_POST['nom'];
     $descripcio = $_POST['descripcio'];
@@ -42,10 +51,8 @@ if (isset($_POST['insert'])) {
   
     move_uploaded_file($imagen_temp, $findestino);
   
-    updateCarta($carta_id,$nom, $descripcio, $generacio_id, $tipus_1, $tipus_2, $findestinobd);
-
-
+    updateCarta($id,$nom, $descripcio, $generacio_id, $tipus_1, $tipus_2, $findestinobd);
+    header('Location: ../index.php');
+    exit();
 }
-header('Location: ../index.php');
-exit();
 }?>

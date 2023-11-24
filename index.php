@@ -77,7 +77,7 @@
                   </div>
                 </div>
                 <div class="btn-group">
-                <button class="btn btn-primary mt-2" name="insert" type="submit" onclick="actualizarAccion('agregar')">Agregar</button>
+                <button class="btn btn-primary mt-2" name="agregar" type="submit" onclick="actualizarAccion('agregar')">Agregar</button>
                 <button class="btn btn-secondary mt-2" name="cancel" onclick="location.reload()" type="submit">Cancelar</button>
                 </div>
 
