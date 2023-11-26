@@ -1,6 +1,5 @@
-
 Proyecto Cartas Pokémon
-¡Bienvenido/a a la aplicación web de Cartas Pokémon! Este proyecto te permite gestionar tu colección de cartas Pokémon de una manera sencilla y organizada. A continuación, encontrarás información sobre cómo utilizar la aplicación y cómo contribuir al desarrollo.
+¡Bienvenido/a a la aplicación web de Cartas Pokémon! Este proyecto te permite gestionar tu colección de cartas Pokémon de una manera sencilla y organizada. A continuación, encontrarás información sobre cómo utilizar la aplicación.
 
 Funcionalidades principales
 Visualizar la colección de cartas: Al ingresar a la aplicación, podrás ver tu colección completa de cartas Pokémon.
