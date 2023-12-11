@@ -17,11 +17,10 @@
 }
 #nav{
   background-color: rgb(165, 2, 2);
-   height: 100px;
+   height: 80px;
   align-items: center;
   text-align: center;
-  padding: 0;
-  height: 130px;
+  padding: 10px;
   margin: 0;
 }
 
@@ -41,7 +40,11 @@
 }
 
   
-  .hidden-form {
+  .hidden-form hidden-form-agregar {
+  display: none;
+}
+
+.hidden-form hidden-form-editar {
   display: none;
 }
 

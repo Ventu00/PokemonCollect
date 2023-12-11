@@ -124,7 +124,7 @@ function selectCarta() {
     $html .= '<input type="hidden" name="id" value="' . $fila['carta_id'] . '">';
     $html .= '<div class="btn-group">';
     $html .= '<button type="submit" class="btn btn-danger btn-sm">ELIMINAR</button>';
-    $html .= '<a href="php_controllers/cartasControler.php?id=' . $fila['carta_id'] . '&type=editar" class="btn btn-dark btn-sm">EDITAR</a>';
+    $html .= '<button type="button" class="btn btn-dark btn-sm" onclick="mostrarFormularioEditar()">EDITAR</button>';
     $html .= '</div>';
     
     
@@ -140,6 +140,7 @@ function selectCarta() {
   return $html;
 }
 function insertCarta($nom, $descripcio, $generacio_id, $tipus_id_1, $tipus_id_2, $imagen) {
+  echo "funciona";
   $conexion = openBd();
 
   // Primero, inserta la carta en la tabla 'carta'
