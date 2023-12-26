@@ -103,13 +103,6 @@ function selectTiposcarta($carta_id) {
   return $html;
 }
 
-
-
-
-
-
-
-
 function selectCarta() {
   $conexion = openbd();
   $sentenciaText = "SELECT * FROM Carta";
@@ -131,7 +124,7 @@ function selectCarta() {
     $html .= '<input type="hidden" name="id" value="' . $fila['carta_id'] . '">';
     $html .= '<div class="btn-group">';
     $html .= '<button type="submit" class="btn btn-danger btn-sm">ELIMINAR</button>';
-    $html .= '<button type="button" class="btn btn-dark btn-sm">EDITAR</button>';
+    $html .= '<button type="button" class="btn btn-dark btn-sm" onclick="mostrarFormularioEditar()">EDITAR</button>';
     $html .= '</div>';
     
     
@@ -147,6 +140,7 @@ function selectCarta() {
   return $html;
 }
 function insertCarta($nom, $descripcio, $generacio_id, $tipus_id_1, $tipus_id_2, $imagen) {
+  echo "funciona";
   $conexion = openBd();
 
   // Primero, inserta la carta en la tabla 'carta'
@@ -177,6 +171,37 @@ function insertCarta($nom, $descripcio, $generacio_id, $tipus_id_1, $tipus_id_2,
 
   $conexion = closeBd();
 }
+
+function updateCarta($carta_id, $nom, $descripcio, $generacio_id, $tipus_1, $tipus_2, $imagen) {
+  $conexion = openBd();
+
+  // Actualiza la información básica de la carta en la tabla 'Carta'
+  $sentenciaText = "UPDATE Carta SET nom = :nom, descripcio = :descripcio, imagen = :imagen WHERE carta_id = :carta_id";
+  $sentencia = $conexion->prepare($sentenciaText);
+  $sentencia->bindParam(':carta_id', $carta_id);
+  $sentencia->bindParam(':nom', $nom);
+  $sentencia->bindParam(':descripcio', $descripcio);
+  $sentencia->bindParam(':imagen', $imagen);
+  $sentencia->execute();
+
+  // Actualiza la relación con la generación en la tabla 'Pertany_a'
+  $sentenciaText = "UPDATE Pertany_a SET generacio_id = :generacio_id WHERE carta_id = :carta_id";
+  $sentencia = $conexion->prepare($sentenciaText);
+  $sentencia->bindParam(':carta_id', $carta_id);
+  $sentencia->bindParam(':generacio_id', $generacio_id);
+  $sentencia->execute();
+
+  // Actualiza la relación con los tipos en la tabla 'Te_Tipus' (relación N-M)
+  $sentenciaText = "UPDATE Te_Tipus SET tipus_id_1 = :tipus_id_1, tipus_id_2 = :tipus_id_2 WHERE carta_id = :carta_id";
+  $sentencia = $conexion->prepare($sentenciaText);
+  $sentencia->bindParam(':carta_id', $carta_id);
+  $sentencia->bindParam(':tipus_id_1', $tipus_id_1);
+  $sentencia->bindParam(':tipus_id_2', $tipus_id_2);
+  $sentencia->execute();
+
+  $conexion = closeBd();
+}
+
 
 function eliminarCarta($carta_id) {
   $conexion = openBd();

@@ -3,11 +3,11 @@ require_once('../php_librarys/back.php');
 ?>
 <?php
 
+if (isset($_POST['editar'])) {
+    echo "funciona";//si funciona
 
-   
-
-if (isset($_POST['agregar'])) {
     $accion = $_POST['accion'];
+    $carta_id = $_POST['carta_id'];
 
     $nom = $_POST['nom'];
     $descripcio = $_POST['descripcio'];
@@ -24,9 +24,8 @@ if (isset($_POST['agregar'])) {
   
     move_uploaded_file($imagen_temp, $findestino);
   
-    insertCarta($nom, $descripcio, $generacio_id, $tipus_1, $tipus_2, $findestinobd);
+    updateCarta($carta_id, $nom, $descripcio, $generacio_id, $tipus_1, $tipus_2, $findestinobd);
 
-echo"pizza";
-header('Location: ../index.php');
+//header('Location: ../index.php');
 exit();
 }?>
