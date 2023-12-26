@@ -85,14 +85,13 @@
  
 <div class="container hidden-form hidden-form-editar">
     <div class="container">
-        <form action="php_controllers/editarControler.php" method="POST" enctype="multipart/form-data">
+        <form action="php_librarys/editarControler.php" method="POST" enctype="multipart/form-data">
             <div>
                 <div class="tituloform">
                   
                     <h6 class="nuevacartatitulo">Editar Carta</h6>
                 </div>
                 <input type="hidden" name="accion" value="editar">
-                <input type="hidden" name="carta_id" value="<?php echo $carta_id; ?>"> 
 
                 <label for="nom">Nombre del Pokemon</label><br>
                 <input type="text" id="nomE" name="nom" class="form-control" required>
@@ -126,6 +125,8 @@
                 </div>
             </div>
             <div class="btn-group">
+            <input type="hidden" name="carta_id" id="carta_idE" value="">
+
             <button class="btn btn-primary mt-2" name="editar" type="submit">Editar</button>
     <button class="btn btn-secondary mt-2" name="cancel" onclick="location.reload()">Cancelar</button>
 </div>

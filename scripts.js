@@ -25,6 +25,8 @@ function mostrarFormulario() {
 }
 
 function mostrarFormularioEditar(carta_id) {
+  document.getElementById('carta_idE').value = carta_id;
+
   var overlay = document.createElement('div');
   overlay.style.position = 'fixed';
   overlay.style.top = '0';

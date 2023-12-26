@@ -124,7 +124,7 @@ function selectCarta() {
     $html .= '<input type="hidden" name="id" value="' . $fila['carta_id'] . '">';
     $html .= '<div class="btn-group">';
     $html .= '<button type="submit" class="btn btn-danger btn-sm">ELIMINAR</button>';
-    $html .= '<button type="button" class="btn btn-dark btn-sm" onclick="mostrarFormularioEditar()">EDITAR</button>';
+    $html .= '<button type="button" class="btn btn-dark btn-sm" onclick="mostrarFormularioEditar(' . $fila['carta_id'] . ')">EDITAR</button>';
     $html .= '</div>';
     
     
