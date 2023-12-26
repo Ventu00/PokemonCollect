@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link href="https://fonts.cdnfonts.com/css/pokemon-solid" rel="stylesheet">
                 
