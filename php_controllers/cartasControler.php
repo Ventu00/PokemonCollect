@@ -1,10 +1,7 @@
 <?php
 require_once('../php_librarys/back.php');
 ?>
-<?php
-
-
-   
+<?php   
 
 if (isset($_POST['agregar'])) {
     $accion = $_POST['accion'];

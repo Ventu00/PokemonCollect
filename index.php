@@ -9,17 +9,14 @@
     <title>Col·leccions</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="style.css">
-    <script src="scripts.js"></script>
+    <link rel="stylesheet" href="estilos/style.css">
+    <script src="javascript/scripts.js"></script>
   </head>
 <body style="margin: 0;">
   <nav  id="nav" class="navbar navbar-expand-lg ">
     <div class="container-fluid">
       <div class="position-absolute top-0 start-50 translate-middle-x">
-      <a class="navbar-brand" href="#" style="color: white; font-size: 40px;font-family: 'Pokemon Solid', sans-serif;
-">CARTAS PoKéMoN 
-</a>
-
+      <a class="navbar-brand" href="#">CARTAS PoKéMoN </a>
     </div>
       </div>
     </div>
@@ -85,7 +82,7 @@
  
 <div class="container hidden-form hidden-form-editar">
     <div class="container">
-        <form action="php_librarys/editarControler.php" method="POST" enctype="multipart/form-data">
+        <form action="php_controllers/editarControler.php" method="POST" enctype="multipart/form-data">
             <div>
                 <div class="tituloform">
                   
@@ -130,15 +127,10 @@
             <button class="btn btn-primary mt-2" name="editar" type="submit">Editar</button>
     <button class="btn btn-secondary mt-2" name="cancel" onclick="location.reload()">Cancelar</button>
 </div>
-
         </form>
     </div>
 </div>
-
-
-
 </div>
-  </div>
-
+</div>
 </body>
 </html>

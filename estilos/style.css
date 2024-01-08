@@ -1,3 +1,7 @@
+body{
+  background: #fbfbfb;
+}
+
 .nav-link {
     color: white;
 }
@@ -11,10 +15,10 @@
 
 }
 
-.nabar-brand{
-    font-family: 'Pokemon Solid', sans-serif;
-                                                
+.navbar-brand{
+  color: white; font-size: 40px;font-family: 'Pokemon Solid', sans-serif;                                                
 }
+
 #nav{
   background-color: rgb(165, 2, 2);
    height: 80px;
@@ -40,6 +44,8 @@
 }
 
   
+
+
   .hidden-form hidden-form-agregar {
   display: none;
 }
@@ -110,6 +116,10 @@
   transition: transform 0.5s;
 }
 
+.card-text{
+  width: 100%;
+  padding-bottom: 20px;
+}
 
 .hidden-form {
   padding-top: 0;
@@ -129,12 +139,10 @@
 }
 
 .form-control {
-  
+  color: black;
   display: block;
   font-size: 1rem;
   line-height: 1.5;
-  color: #f8f8f8;
-  background-color: #fafafa;
   background-clip: padding-box;
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
@@ -157,7 +165,6 @@ margin-top: 0;
 font-size: 30px;
 }
 
-
 .btn-success {
   color: #fff;
   background-color: #28a745;
@@ -168,6 +175,7 @@ font-size: 30px;
   color: #fff;
   background-color: #007bff;
   border-color: #007bff;
+  
 }
 
 .btn-secondary {
