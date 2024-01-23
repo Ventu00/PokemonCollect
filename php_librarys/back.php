@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 function openbd(){
 
@@ -126,34 +127,7 @@ function selectCarta() {
   $sentencia->execute();
   $resultado = $sentencia->fetchAll();
 
-  $html = '';
-  foreach ($resultado as $fila) {
-    $html .= '<div class="col-sm mt-4">';
-    $html .= '<div class="card"">';
-    if (!empty($fila['imagen'])) {
-      $html .= "<img src='" . $fila['imagen'] . "' class='card-img-top' alt='Imagen de la carta'>";
-    }
-    $html .= '<div class="card-body">';
-    $html .= '<h5 class="card-title">' . $fila['nom'] . '</h5>';
-    $html .= '<p class="card-text">' . $fila['descripcio'] . '</p>';
-    $html .= '<form method="post" action="php_controllers/eliminar.php">';
-    $html .= '<input type="hidden" name="id" value="' . $fila['carta_id'] . '">';
-    $html .= '<div class="btn-group">';
-    $html .= '<button type="submit" class="btn btn-danger btn-sm">ELIMINAR</button>';
-    $html .= '<button type="button" class="btn btn-dark btn-sm" onclick="mostrarFormularioEditar(' . $fila['carta_id'] . ')">EDITAR</button>';
-    $html .= '</div>';
-    
-    
-    $html .= '<div  style="float: right;">';
-    $html .= selectTiposcarta($fila['carta_id']);
-    $html .= '</div>';
-    $html .= '</form>';
-    $html .= '</div>';
-    $html .= '</div>';
-    $html .= '</div>';
-  }
-
-  return $html;
+  return $resultado;
 }
 
 
@@ -161,33 +135,37 @@ function selectCarta() {
 ///////////////////////////////////////////////////////  Funciones de controladores
 
 function insertCarta($nom, $descripcio, $generacio_id, $tipus_id_1, $tipus_id_2, $imagen) {
-  echo "funciona";
-  $conexion = openBd();
+  try{
+    $conexion = openBd();
 
-  $sentenciaText = "INSERT INTO Carta (nom, descripcio, imagen) VALUES (:nom, :descripcio, :imagen)";
-  $sentencia = $conexion->prepare($sentenciaText);
-  $sentencia->bindParam(':nom', $nom);
-  $sentencia->bindParam(':descripcio', $descripcio);
-  $sentencia->bindParam(':imagen', $imagen);
-  $sentencia->execute();
+    $sentenciaText = "INSERT INTO Carta (nom, descripcio, imagen) VALUES (:nom, :descripcio, :imagen)";
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->bindParam(':nom', $nom);
+    $sentencia->bindParam(':descripcio', $descripcio);
+    $sentencia->bindParam(':imagen', $imagen);
+    $sentencia->execute();
+  
+    // Obtiene el ID de la carta recién insertada
+    $carta_id = $conexion->lastInsertId();
+  
+    $sentenciaText = "INSERT INTO Pertany_a (carta_id, generacio_id) VALUES (:carta_id, :generacio_id)";
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->bindParam(':carta_id', $carta_id);
+    $sentencia->bindParam(':generacio_id', $generacio_id);
+    $sentencia->execute();
+  
+    $sentenciaText = "INSERT INTO Te_Tipus (carta_id, tipus_id_1, tipus_id_2) VALUES (:carta_id, :tipus_id_1, :tipus_id_2)";
+    $sentencia = $conexion->prepare($sentenciaText);
+    $sentencia->bindParam(':carta_id', $carta_id);
+    $sentencia->bindParam(':tipus_id_1', $tipus_id_1);
+    $sentencia->bindParam(':tipus_id_2', $tipus_id_2);
+    $sentencia->execute();
+  
+    $conexion = closeBd();
 
-  // Obtiene el ID de la carta recién insertada
-  $carta_id = $conexion->lastInsertId();
-
-  $sentenciaText = "INSERT INTO Pertany_a (carta_id, generacio_id) VALUES (:carta_id, :generacio_id)";
-  $sentencia = $conexion->prepare($sentenciaText);
-  $sentencia->bindParam(':carta_id', $carta_id);
-  $sentencia->bindParam(':generacio_id', $generacio_id);
-  $sentencia->execute();
-
-  $sentenciaText = "INSERT INTO Te_Tipus (carta_id, tipus_id_1, tipus_id_2) VALUES (:carta_id, :tipus_id_1, :tipus_id_2)";
-  $sentencia = $conexion->prepare($sentenciaText);
-  $sentencia->bindParam(':carta_id', $carta_id);
-  $sentencia->bindParam(':tipus_id_1', $tipus_id_1);
-  $sentencia->bindParam(':tipus_id_2', $tipus_id_2);
-  $sentencia->execute();
-
-  $conexion = closeBd();
+  }catch(PDOException $e){
+    $_SESSION['error']= $e->getCode() . ' - ' . $e->getMessage();
+  }
 }
 
 function updateCarta($carta_id, $nom, $descripcio, $generacio_id, $tipus_1, $tipus_2, $imagen) {

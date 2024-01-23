@@ -27,8 +27,44 @@
     <div class="row m-4">
       <?php
         require_once('./php_librarys/back.php');
-        echo selectCarta();
+        $resultado = selectCarta();        
     ?>
+
+
+<div class="container">
+    <div class="row">
+        <?php foreach ($resultado as $fila): ?>
+            <div class="col-sm-4 mt-4"> 
+                <div class="card">
+                    <?php if (!empty($fila['imagen'])): ?>
+                        <img src="<?= $fila['imagen'] ?>" class="card-img-top" alt="Imagen de la carta">
+                    <?php endif; ?>
+                    <div class="card-body">
+                        <?php require_once('./php_partials/mensajes.php'); ?>
+                        <h5 class="card-title"><?= $fila['nom'] ?></h5>
+                        <p class="card-text"><?= $fila['descripcio'] ?></p>
+                        <form method="post" action="php_controllers/eliminar.php">
+                            <input type="hidden" name="id" value="<?= $fila['carta_id'] ?>">
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-danger btn-sm">ELIMINAR</button>
+                                <button type="button" class="btn btn-dark btn-sm" onclick="mostrarFormularioEditar(<?= $fila['carta_id'] ?>)">EDITAR</button>
+                            </div>
+                            <div style="float: right;">
+                                <?= selectTiposcarta($fila['carta_id']) ?>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+
+    
+
+
+
+
 <div class="botonmas">
     <button type="button" onclick="mostrarFormulario()" class="btn btn-success btn-circle btn-xl float-right">+</button>
     <div class="container hidden-form hidden-form-agregar">
