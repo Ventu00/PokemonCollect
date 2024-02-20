@@ -2,7 +2,7 @@
 require_once('../php_librarys/back.php');
 ?>
 <?php   
-
+/*
 if (isset($_POST['agregar'])) {
     $accion = $_POST['accion'];
 
@@ -33,14 +33,15 @@ if (isset($_POST['agregar'])) {
   
 
 }?>
-
-
-<?php
+*/
 /*
+<?php  
 require_once('../php_librarys/back.php');
+?>
 */
 
-/*
+
+
 if (isset($_POST['agregar'])) {
     $accion = $_POST['accion'];
 
@@ -65,6 +66,6 @@ if (isset($_POST['agregar'])) {
     header('Location: ../index.php');
     exit();
 }
-*/
+
 ?>
 
