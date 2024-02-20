@@ -135,8 +135,10 @@ function selectCarta() {
 ///////////////////////////////////////////////////////  Funciones de controladores
 
 function insertCarta($nom, $descripcio, $generacio_id, $tipus_id_1, $tipus_id_2, $imagen) {
-  try{
-    $conexion = openBd();
+  $conexion = openBd();
+  try {
+    // Inicia la transacción
+    $conexion->beginTransaction();
 
     $sentenciaText = "INSERT INTO Carta (nom, descripcio, imagen) VALUES (:nom, :descripcio, :imagen)";
     $sentencia = $conexion->prepare($sentenciaText);
@@ -160,13 +162,18 @@ function insertCarta($nom, $descripcio, $generacio_id, $tipus_id_1, $tipus_id_2,
     $sentencia->bindParam(':tipus_id_1', $tipus_id_1);
     $sentencia->bindParam(':tipus_id_2', $tipus_id_2);
     $sentencia->execute();
-  
+
+    // Confirma la transacción
+    $conexion->commit();
     $conexion = closeBd();
 
-  }catch(PDOException $e){
-    $_SESSION['error']= $e->getCode() . ' - ' . $e->getMessage();
+  } catch(PDOException $e) {
+    // Revierte la transacción si hay un error
+    $conexion->rollback();
+    $_SESSION['error'] = $e->getCode() . ' - ' . $e->getMessage();
   }
 }
+
 
 function updateCarta($carta_id, $nom, $descripcio, $generacio_id, $tipus_1, $tipus_2, $imagen) {
   $conexion = openBd();
