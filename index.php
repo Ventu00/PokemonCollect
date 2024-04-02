@@ -43,7 +43,7 @@
                         <?php require_once('./php_partials/mensajes.php'); ?>
                         <h5 class="card-title"><?= $fila['nom'] ?></h5>
                         <p class="card-text"><?= $fila['descripcio'] ?></p>
-                        <form method="post" action="php_controllers/eliminar.php">
+                        <form method="post" action="php_controllers/controler.php">
                             <input type="hidden" name="id" value="<?= $fila['carta_id'] ?>">
                             <div class="btn-group">
                                 <button type="submit" class="btn btn-danger btn-sm">ELIMINAR</button>
@@ -69,7 +69,7 @@
     <button type="button" onclick="mostrarFormulario()" class="btn btn-success btn-circle btn-xl float-right">+</button>
     <div class="container hidden-form hidden-form-agregar">
         <div class="container ">
-            <form action="php_controllers/cartasControler.php" method="POST" enctype="multipart/form-data">
+            <form action="php_controllers/controler.php" method="POST" enctype="multipart/form-data">
                 <div>
                   <div class="tituloform">
                   <h6 class="nuevacartatitulo">Nueva Carta</h6>
@@ -118,7 +118,7 @@
  
 <div class="container hidden-form hidden-form-editar">
     <div class="container">
-        <form action="php_controllers/editarControler.php" method="POST" enctype="multipart/form-data">
+        <form action="php_controllers/controler.php" method="POST" enctype="multipart/form-data">
             <div>
                 <div class="tituloform">
                   

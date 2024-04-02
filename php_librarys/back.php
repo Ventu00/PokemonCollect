@@ -24,111 +24,139 @@ function closebd(){
 ///////////////////////////////////////////////////////////////Funciones selección
 
 function selectTipus() {
-  $conexion = openbd();
-  $sentenciaText = "SELECT * FROM Tipus";
-  $sentencia = $conexion->prepare($sentenciaText);
-  $sentencia->execute();
-  $resultado = $sentencia->fetchAll();
+  try {
+      $conexion = openbd();
 
-  $html = '<select class="form-select" id="tipus_id" name="tipus_id_1" required>  ';
-  foreach ($resultado as $fila) {
-    if (array_key_exists('nomt', $fila)) {
-      $html .= '<option value="' . $fila['tipus_id'] . '">' . $fila['nomt'] . '</option>';
-    } else {
-      echo "La clave 'nomt' no existe en el array fila.";
-    }
+      $sentenciaText = "SELECT * FROM Tipus";
+      $sentencia = $conexion->prepare($sentenciaText);
+      $sentencia->execute();
+      $resultado = $sentencia->fetchAll();
+
+      $html = '<select class="form-select" id="tipus_id" name="tipus_id_1" required>';
+      foreach ($resultado as $fila) {
+          if (array_key_exists('nomt', $fila)) {
+              $html .= '<option value="' . $fila['tipus_id'] . '">' . $fila['nomt'] . '</option>';
+          } else {
+              throw new Exception("La clave 'nomt' no existe en el array fila.");
+          }
+      }
+      $html .= '</select>';
+
+      closebd($conexion);
+      return $html;
+  } catch (PDOException $e) {
+      $_SESSION['error'] = $e->getCode() . ' - ' . $e->getMessage();
+      return false;
+  } catch (Exception $ex) {
+      $_SESSION['error'] = $ex->getMessage();
+      return false;
   }
-  $html .= '</select>';
-  
-  $conexion = closebd();
-  return $html;
 }
+
 
 function selectTipus2() {
-  $conexion = openbd();
-  $sentenciaText = "SELECT * FROM Tipus";
-  $sentencia = $conexion->prepare($sentenciaText);
-  $sentencia->execute();
-  $resultado = $sentencia->fetchAll();
+  try {
+      $conexion = openbd();
 
-  $html = '<select class="form-select" id="tipus_id" name="tipus_id_2" required>  ';
-  foreach ($resultado as $fila) {
-    if (array_key_exists('nomt', $fila)) {
-      $html .= '<option value="' . $fila['tipus_id'] . '">' . $fila['nomt'] . '</option>';
-    } else {
-      echo "La clave 'nomt' no existe en el array fila.";
-    }
+      $sentenciaText = "SELECT * FROM Tipus";
+      $sentencia = $conexion->prepare($sentenciaText);
+      $sentencia->execute();
+      $resultado = $sentencia->fetchAll();
+
+      $html = '<select class="form-select" id="tipus_id" name="tipus_id_2" required>';
+      foreach ($resultado as $fila) {
+          if (array_key_exists('nomt', $fila)) {
+              $html .= '<option value="' . $fila['tipus_id'] . '">' . $fila['nomt'] . '</option>';
+          } else {
+              throw new Exception("La clave 'nomt' no existe en el array fila.");
+          }
+      }
+      $html .= '</select>';
+
+      closebd($conexion);
+      return $html;
+  } catch (PDOException $e) {
+      $_SESSION['error'] = $e->getCode() . ' - ' . $e->getMessage();
+      return false;
+  } catch (Exception $ex) {
+      $_SESSION['error'] = $ex->getMessage();
+      return false;
   }
-  $html .= '</select>';
-  
-
-  $conexion = closebd();
-  return $html;
 }
+
 
 
 
 function selectTiposcarta($carta_id) {
-  $conexion = openbd();
+  try {
+      $conexion = openbd();
 
-    // Consulta para  tipos
-  $sentenciaTextTipos = " SELECT TT.carta_id, T1.nomt as tipo_1, T2.nomt as tipo_2
-                        FROM Te_Tipus TT
-                        INNER JOIN Tipus T1 ON TT.tipus_id_1 = T1.tipus_id
-                        INNER JOIN Tipus T2 ON TT.tipus_id_2 = T2.tipus_id
-                        WHERE TT.carta_id = :carta_id";
-                        
-  $sentenciaTipos = $conexion->prepare($sentenciaTextTipos);
-  $sentenciaTipos->bindParam(':carta_id', $carta_id);
-  $sentenciaTipos->execute();
-  $resultadoTipos = $sentenciaTipos->fetchAll();
+      // Consulta para tipos
+      $sentenciaTextTipos = "SELECT TT.carta_id, T1.nomt AS tipo_1, T2.nomt AS tipo_2
+                          FROM Te_Tipus TT
+                          INNER JOIN Tipus T1 ON TT.tipus_id_1 = T1.tipus_id
+                          INNER JOIN Tipus T2 ON TT.tipus_id_2 = T2.tipus_id
+                          WHERE TT.carta_id = :carta_id";
 
+      $sentenciaTipos = $conexion->prepare($sentenciaTextTipos);
+      $sentenciaTipos->bindParam(':carta_id', $carta_id);
+      $sentenciaTipos->execute();
+      $resultadoTipos = $sentenciaTipos->fetchAll();
 
+      // Consulta para la generación
+      $sentenciaTextGeneracion = "SELECT G.numerog
+                                  FROM Generacio G
+                                  INNER JOIN Pertany_a P ON G.generacio_id = P.generacio_id
+                                  WHERE P.carta_id = :carta_id";
 
+      $sentenciaGeneracion = $conexion->prepare($sentenciaTextGeneracion);
+      $sentenciaGeneracion->bindParam(':carta_id', $carta_id);
+      $sentenciaGeneracion->execute();
+      $generacion = $sentenciaGeneracion->fetchColumn();
 
-  // Consulta para  la generación
-  $sentenciaTextGeneracion = "SELECT G.numerog
-                             FROM Generacio G
-                             INNER JOIN Pertany_a P ON G.generacio_id = P.generacio_id
-                             WHERE P.carta_id = :carta_id";
+      // Generar HTML
+      $html = '<div class="tiposcontainer">';
+      $html .= '<div class="fuentestitulotipo"><strong>Tipo 1</strong><span class="spantipo"><strong>Tipo 2</strong></span></div>';
+      foreach ($resultadoTipos as $fila) {
+          $html .= '<div class="tipostabla">';
+          $html .= '<span>' . $fila['tipo_1'] . '</span>';
+          $html .= '<span class="contenidotipospan"><strong>-</strong></span>';
+          $html .= '<span class="contenidotipospan">' . $fila['tipo_2'] . '</span>';
+          $html .= '</div>';
+      }
 
-  $sentenciaGeneracion = $conexion->prepare($sentenciaTextGeneracion);
-  $sentenciaGeneracion->bindParam(':carta_id', $carta_id);
-  $sentenciaGeneracion->execute();
-  $generacion = $sentenciaGeneracion->fetchColumn();
+      // Agregar la generación
+      $html .= '<div class="generacioninfo"><strong>Generación:</strong> ' . $generacion . '</div>';
 
-
-
-  // Agregar la tipos
-
-  $html = '<div class="tiposcontainer">';
-  $html .= '<div class="fuentestitulotipo";><strong>Tipo 1</strong><span class="spantipo"><strong>Tipo 2</strong></span></div>';
-  foreach ($resultadoTipos as $fila) {
-      $html .= '<div class="tipostabla">';
-      $html .= '<span>' . $fila['tipo_1'] . '</span>';
-      $html .= '<span class="contenidotipospan" ><strong>-</strong></span>';
-      $html .= '<span class="contenidotipospan" >' . $fila['tipo_2'] . '</span>';
       $html .= '</div>';
+
+      closebd($conexion);
+      return $html;
+  } catch (PDOException $e) {
+      $_SESSION['error'] = $e->getCode() . ' - ' . $e->getMessage();
+      return false;
   }
-
-  // Agregar la generación
-  $html .= '<div class="generacioninfo" ><strong>Generación:</strong> ' . $generacion . '</div>';
-
-  $html .= '</div>';
-
-  $conexion = closebd();
-  return $html;
 }
+
 
 function selectCarta() {
-  $conexion = openbd();
-  $sentenciaText = "SELECT * FROM Carta";
-  $sentencia = $conexion->prepare($sentenciaText);
-  $sentencia->execute();
-  $resultado = $sentencia->fetchAll();
+  try {
+      $conexion = openbd();
 
-  return $resultado;
+      $sentenciaText = "SELECT * FROM Carta";
+      $sentencia = $conexion->prepare($sentenciaText);
+      $sentencia->execute();
+      $resultado = $sentencia->fetchAll();
+
+      closebd($conexion);
+
+      return $resultado;
+  } catch (PDOException $e) {
+      $_SESSION['error'] = $e->getCode() . ' - ' . $e->getMessage();
+      return false;
+  }
 }
+
 
 
 
@@ -177,53 +205,73 @@ function insertCarta($nom, $descripcio, $generacio_id, $tipus_id_1, $tipus_id_2,
 
 function updateCarta($carta_id, $nom, $descripcio, $generacio_id, $tipus_1, $tipus_2, $imagen) {
   $conexion = openBd();
+  try {
+      $conexion->beginTransaction();
 
-  $sentenciaText = "UPDATE Carta SET nom = :nom, descripcio = :descripcio, imagen = :imagen WHERE carta_id = :carta_id";
-  $sentencia = $conexion->prepare($sentenciaText);
-  $sentencia->bindParam(':carta_id', $carta_id);
-  $sentencia->bindParam(':nom', $nom);
-  $sentencia->bindParam(':descripcio', $descripcio);
-  $sentencia->bindParam(':imagen', $imagen);
-  $sentencia->execute();
+      // Actualizamos la carta
+      $sentenciaText = "UPDATE Carta SET nom = :nom, descripcio = :descripcio, imagen = :imagen WHERE carta_id = :carta_id";
+      $sentencia = $conexion->prepare($sentenciaText);
+      $sentencia->bindParam(':carta_id', $carta_id);
+      $sentencia->bindParam(':nom', $nom);
+      $sentencia->bindParam(':descripcio', $descripcio);
+      $sentencia->bindParam(':imagen', $imagen);
+      $sentencia->execute();
 
-  // Actualiza la relación con la generación en la tabla 'Pertany_a'
-  $sentenciaText = "UPDATE Pertany_a SET generacio_id = :generacio_id WHERE carta_id = :carta_id";
-  $sentencia = $conexion->prepare($sentenciaText);
-  $sentencia->bindParam(':carta_id', $carta_id);
-  $sentencia->bindParam(':generacio_id', $generacio_id);
-  $sentencia->execute();
+      // Actualizamos la relación con la generación en la tabla 'Pertany_a'
+      $sentenciaText = "UPDATE Pertany_a SET generacio_id = :generacio_id WHERE carta_id = :carta_id";
+      $sentencia = $conexion->prepare($sentenciaText);
+      $sentencia->bindParam(':carta_id', $carta_id);
+      $sentencia->bindParam(':generacio_id', $generacio_id);
+      $sentencia->execute();
 
-  // Actualiza la relación con los tipos en la tabla 'Te_Tipus' (relación N-M)
-  $sentenciaText = "UPDATE Te_Tipus SET tipus_id_1 = :tipus_id_1, tipus_id_2 = :tipus_id_2 WHERE carta_id = :carta_id";
-  $sentencia = $conexion->prepare($sentenciaText);
-  $sentencia->bindParam(':carta_id', $carta_id);
-  $sentencia->bindParam(':tipus_id_1', $tipus_1);
-  $sentencia->bindParam(':tipus_id_2', $tipus_2);
-  $sentencia->execute();
+      // Actualizamos la relación con los tipos en la tabla 'Te_Tipus' (relación N-M)
+      $sentenciaText = "UPDATE Te_Tipus SET tipus_id_1 = :tipus_id_1, tipus_id_2 = :tipus_id_2 WHERE carta_id = :carta_id";
+      $sentencia = $conexion->prepare($sentenciaText);
+      $sentencia->bindParam(':carta_id', $carta_id);
+      $sentencia->bindParam(':tipus_id_1', $tipus_1);
+      $sentencia->bindParam(':tipus_id_2', $tipus_2);
+      $sentencia->execute();
 
-  $conexion = closeBd();
+      $conexion->commit();
+      closeBd($conexion);
+  } catch (Exception $e) {
+      $conexion->rollback();
+      $_SESSION['error'] = $e->getMessage();
+  }
 }
+
 
 
 function eliminarCarta($carta_id) {
   $conexion = openBd();
+  try {
+      $conexion->beginTransaction();
 
-  $sentenciaText = "DELETE FROM Pertany_a WHERE carta_id = :carta_id";
-  $sentencia = $conexion->prepare($sentenciaText);
-  $sentencia->bindParam(':carta_id', $carta_id);
-  $sentencia->execute();
+      // Eliminamos la relación con la generación
+      $sentenciaText = "DELETE FROM Pertany_a WHERE carta_id = :carta_id";
+      $sentencia = $conexion->prepare($sentenciaText);
+      $sentencia->bindParam(':carta_id', $carta_id);
+      $sentencia->execute();
 
-  $sentenciaText = "DELETE FROM Te_Tipus WHERE carta_id = :carta_id";
-  $sentencia = $conexion->prepare($sentenciaText);
-  $sentencia->bindParam(':carta_id', $carta_id);
-  $sentencia->execute();
+      // Eliminamos la relación con los tipos
+      $sentenciaText = "DELETE FROM Te_Tipus WHERE carta_id = :carta_id";
+      $sentencia = $conexion->prepare($sentenciaText);
+      $sentencia->bindParam(':carta_id', $carta_id);
+      $sentencia->execute();
 
-  $sentenciaText = "DELETE FROM Carta WHERE carta_id = :carta_id";
-  $sentencia = $conexion->prepare($sentenciaText);
-  $sentencia->bindParam(':carta_id', $carta_id);
-  $sentencia->execute();
+      // Eliminamos la carta
+      $sentenciaText = "DELETE FROM Carta WHERE carta_id = :carta_id";
+      $sentencia = $conexion->prepare($sentenciaText);
+      $sentencia->bindParam(':carta_id', $carta_id);
+      $sentencia->execute();
 
-  $conexion = closeBd();
+      $conexion->commit();
+      closebd($conexion);
+  } catch (Exception $e) {
+      $conexion->rollback();
+      $_SESSION['error'] = $e->getMessage();
+  }
 }
+
 
 
